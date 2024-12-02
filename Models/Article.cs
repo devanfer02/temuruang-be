@@ -14,12 +14,14 @@ public class Article
 
     [Required]
     [MaxLength(255)]
-    public string Title { get; set; }
+    public required string Title { get; set; }
 
-    public string Description { get; set; }
+    [Required]
+    public required string Description { get; set; }
     
     [Url]
-    public string PhotoLink { get; set; }
+    [Required]
+    public required string PhotoLink { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

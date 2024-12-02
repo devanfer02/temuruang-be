@@ -1,5 +1,7 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using temuruang_be.Dtos.UserDTO;
 
 namespace temuruang_be.Models;
 
@@ -12,21 +14,35 @@ public class User
 
     [Required]
     [MaxLength(255)]
-    public string Fullname { get; set; }
+    public required string Fullname { get; set; }
 
     [Required]
     [EmailAddress]
     [MaxLength(255)]
-    public string Email { get; set; }
+    public required string Email { get; set; }
 
-    [Required]
     [MinLength(6)]
     public string Password { get; set; }
 
+    [DefaultValue("CURRENT_TIMESTAMP")]
     public DateTime CreatedAt { get; set; }
+
+    [DefaultValue("CURRENT_TIMESTAMP")]
     public DateTime UpdatedAt { get; set; }
 
-    // Navigation properties
     public ICollection<Article> Articles { get; set; }
     public ICollection<Booking> Bookings { get; set; }
+
+    // mapper
+    public static FetchUserDTO ToFetchUserDTO(User user) 
+    {
+        return new FetchUserDTO
+        {
+            Id = user.Id,
+            Fullname = user.Fullname,
+            Email = user.Email,
+            CreatedAt = user.CreatedAt,
+            UpdatedAt = user.UpdatedAt
+        };
+    }
 }

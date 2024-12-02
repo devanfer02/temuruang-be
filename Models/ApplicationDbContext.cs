@@ -10,5 +10,5 @@ public class ApplicationDbContext : DbContext
 
     }
 
-    public DbSet<User> People { get; set; }
+    public DbSet<User> User { get; set; }
 }

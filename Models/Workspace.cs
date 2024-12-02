@@ -11,20 +11,21 @@ public class Workspace
 
     [Required]
     [MaxLength(255)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
-    public string Description { get; set; }
+    [Required]
+    public required string Description { get; set; }
 
     [Required]
     [MaxLength(255)]
-    public string Location { get; set; }
+    public required string Location { get; set; }
 
     [Required]
     [MaxLength(50)]
-    public string Type { get; set; }
+    public required string Type { get; set; }
 
     [Required]
-    public int Price { get; set; }
+    public required int Price { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

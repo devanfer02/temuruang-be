@@ -17,6 +17,10 @@ help:
 run:
 	dotnet run
 
+.PHONY: dev
+dev:
+	dotnet watch run
+
 .PHONY: build
 build: restore
 	dotnet build
@@ -29,8 +33,8 @@ migrate:
 clean-migrations:
 	rm -rf $(MIGRATIONS_FOLDER)/*
 
-.PHONY: fresh-migrate
-fresh-migrate:
+.PHONY: migrate-fresh
+migrate-fresh:
 	@echo "Dropping existing database..."
 	dotnet ef database drop --force
 	@echo "Applying migrations..."
