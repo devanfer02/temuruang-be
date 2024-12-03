@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using temuruang_be.Dtos.UserDTO;
+using temuruang_be.Dtos.ArticleDTO;
 using temuruang_be.Models;
 using temuruang_be.Services;
 
@@ -59,7 +59,7 @@ public class ArticleController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> AddArticle(Article article)
+    public async Task<IActionResult> AddArticle(ArticleRequestDTO dto)
     {
         try 
         {
@@ -70,6 +70,7 @@ public class ArticleController : ControllerBase
                 return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
             }
 
+            Article article = ArticleRequestDTO.ToArticle(dto);
             article.UserId = Guid.Parse(userId);
 
             await _artSvc.AddArticle(article);
@@ -85,7 +86,7 @@ public class ArticleController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize]
-    public async Task<IActionResult> UpdateArticle(int id, UpdateUserDTO dto)
+    public async Task<IActionResult> UpdateArticle(int id, ArticleRequestDTO dto)
     {
         try 
         {
@@ -108,7 +109,10 @@ public class ArticleController : ControllerBase
                 return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
             }
 
-            await _artSvc.UpdateArticle(id, article);
+            Article updated = ArticleRequestDTO.ToArticle(dto);
+            updated.UserId = Guid.Parse(userId);
+
+            await _artSvc.UpdateArticle(id, updated);
 
             return Ok(ApiResponse<string?>.Create(200, "successfully update article", null));
         } 

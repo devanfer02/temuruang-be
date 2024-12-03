@@ -32,6 +32,7 @@ public sealed class ArticleService : IArticleService
 
     public async Task UpdateArticle(int id, Article article) 
     {
+        article.Id = id;
         dbCtx.Update(article);
 
         await dbCtx.SaveChangesAsync();

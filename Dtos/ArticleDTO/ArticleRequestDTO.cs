@@ -3,7 +3,7 @@ using temuruang_be.Models;
 
 namespace temuruang_be.Dtos.ArticleDTO;
 
-public class CreateArticleDTO
+public class ArticleRequestDTO
 {
     [Required]
     public required string Title { get; set; }
@@ -11,7 +11,7 @@ public class CreateArticleDTO
     [Required]
     public required string Description { get; set; }
 
-    public static Article ToArticle(CreateArticleDTO dto)
+    public static Article ToArticle(ArticleRequestDTO dto)
     {
         return new Article
         {
