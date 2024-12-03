@@ -24,10 +24,8 @@ public class User
     [MinLength(6)]
     public string Password { get; set; }
 
-    [DefaultValue("CURRENT_TIMESTAMP")]
     public DateTime CreatedAt { get; set; }
 
-    [DefaultValue("CURRENT_TIMESTAMP")]
     public DateTime UpdatedAt { get; set; }
 
     public ICollection<Article> Articles { get; set; }

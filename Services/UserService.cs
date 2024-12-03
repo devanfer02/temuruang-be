@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using temuruang_be.Dtos.UserDTO;
 using temuruang_be.Models;
@@ -10,6 +12,7 @@ public interface IUserService
     Task UpdateUser(Guid id, UpdateUserDTO dto);
     Task DeleteUser(User user);
     Task<FetchUserDTO?> FetchUserByID(Guid id);
+    Task<User?> FetchUserByEmail(string email);
     Task<IEnumerable<FetchUserDTO>> FetchUsers();
 }
 
@@ -25,6 +28,13 @@ public sealed class UserService : IUserService
     public async Task<FetchUserDTO> AddUser(CreateUserDTO dto) 
     {
         User user = CreateUserDTO.ToUser(dto);
+
+        var sha256 = SHA256.Create();
+
+        var bytes = Encoding.UTF8.GetBytes(user.Password);
+        var hash = sha256.ComputeHash(bytes);
+        var hashString = Convert.ToBase64String(hash);
+        user.Password = hashString;
 
         dbCtx.Add(user);
 
@@ -42,11 +52,11 @@ public sealed class UserService : IUserService
             return;
         }
 
-        // User user = UpdateUserDTO.ToUser(dto, existingUser);
+        User user = UpdateUserDTO.ToUser(dto, existingUser);
 
-        // dbCtx.Update(user);
+        dbCtx.Update(user);
 
-        // await dbCtx.SaveChangesAsync();
+        await dbCtx.SaveChangesAsync();
     }
 
     public async Task DeleteUser(User user)
@@ -66,6 +76,13 @@ public sealed class UserService : IUserService
         }
 
         return User.ToFetchUserDTO(user);        
+    }
+
+    public async Task<User?> FetchUserByEmail(string email) 
+    {
+        User? user = await dbCtx.User.Where(u => u.Email == email).AsNoTracking().FirstOrDefaultAsync();
+
+        return user;
     }
 
     public async Task<IEnumerable<FetchUserDTO>> FetchUsers()

@@ -11,4 +11,26 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<User> User { get; set; }
+    public DbSet<Article> Article { get; set; }
+    public DbSet<Workspace> Workspace { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+
+        modelBuilder.Entity<User>(entity => 
+        {
+            entity.Property(property => property.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(property => property.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+        });
+        modelBuilder.Entity<Article>(entity => 
+        {
+            entity.Property(property => property.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(property => property.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+        });
+        modelBuilder.Entity<Workspace>(entity => 
+        {
+            entity.Property(property => property.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(property => property.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+        });
+    }
 }
