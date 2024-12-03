@@ -7,26 +7,32 @@ using temuruang_be.Services;
 namespace temuruang_be.Controllers;
 
 [ApiController]
-[Route("api/users")]
-public class UserController : ControllerBase
+[Route("api/articles")]
+public class ArticleController : ControllerBase
 {
     private readonly IUserService _userSvc;
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<ArticleController> _logger;
 
-    public UserController(IUserService userService, ILogger<UserController> logger)
+    public ArticleController(IUserService userService, ILogger<ArticleController> logger)
     {
         _userSvc = userService;
         _logger = logger;
     }
 
     [HttpGet]
-    public async Task<IActionResult> FetchAllUsers()
+    [Authorize]
+    public async Task<IActionResult> FetchAllArticles()
     {
         try 
         {
-            var users = await _userSvc.FetchUsers();
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
 
-            return Ok(ApiResponse<IEnumerable<FetchUserDTO>>.Create(200, "successfully fetch all users", users));
+            if (userId == null) 
+            {
+                return Unauthorized("User id not found");
+            }
+
+            return Ok(userId);
         }
         catch (Exception e)
         {

@@ -10,7 +10,7 @@ namespace temuruang_be.Services;
 
 public interface IAuthService 
 {
-    Boolean PasswordMatch(User user, LoginDTO dto);
+    bool PasswordMatch(User user, LoginDTO dto);
     string CreateToken(User user);
 
 }
@@ -50,25 +50,22 @@ public class AuthService : IAuthService
             SecurityAlgorithms.HmacSha256
         );
 
-        var tokenDescriptor = new SecurityTokenDescriptor
+       var claims = new[]
         {
-            SigningCredentials = credentials,
-            Expires = DateTime.UtcNow.AddHours(1),
-            Subject = GenerateClaims(user)
+            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+            new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString())
         };
 
-        var token = handler.CreateToken(tokenDescriptor);
-
+        var token = new JwtSecurityToken(
+            issuer: _iconf["Jwt:Issuer"],
+            audience: _iconf["Jwt:Audience"],
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(double.Parse(_iconf["Jwt:ExpireMinutes"])),
+            signingCredentials: credentials
+        );
+    
         return handler.WriteToken(token);
     }
 
-    private static ClaimsIdentity GenerateClaims(User user)
-    {
-        var ci = new ClaimsIdentity();
 
-        ci.AddClaim(new Claim("id", user.Id.ToString()));
-        ci.AddClaim(new Claim("email", user.Email));
-
-        return ci;
-    }
 }
