@@ -25,7 +25,7 @@ public class Workspace
     public required string Type { get; set; }
 
     [Required]
-    public required int Price { get; set; }
+    public required long Price { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

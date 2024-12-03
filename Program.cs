@@ -12,11 +12,11 @@ var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
 
 string connectionString = builder.Configuration.GetConnectionString("default")!;
 
-// Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(op => op.UseNpgsql(connectionString));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IWorkspaceService, WorkspaceService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opts => 
     {
@@ -31,6 +31,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
     });
+builder.Services.AddCors(opts => {
+    opts.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin() //
+              .AllowAnyHeader() 
+              .AllowAnyMethod(); 
+    });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -45,7 +53,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseCors("AllowAll");
 app.MapControllers();
 
 app.Run();
