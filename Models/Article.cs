@@ -20,8 +20,7 @@ public class Article
     public required string Description { get; set; }
     
     [Url]
-    [Required]
-    public required string PhotoLink { get; set; }
+    public string PhotoLink { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

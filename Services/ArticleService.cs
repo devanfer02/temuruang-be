@@ -1,19 +1,15 @@
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
-using temuruang_be.Dtos.UserDTO;
 using temuruang_be.Models;
 
 namespace temuruang_be.Services;
 
 public interface IArticleService
 {
-    Task<FetchUserDTO> AddUser(CreateUserDTO dto);
-    Task UpdateUser(Guid id, UpdateUserDTO dto);
-    Task DeleteUser(User user);
-    Task<FetchUserDTO?> FetchUserByID(Guid id);
-    Task<User?> FetchUserByEmail(string email);
-    Task<IEnumerable<FetchUserDTO>> FetchUsers();
+    Task<Article> AddArticle(Article article) ;
+    Task UpdateArticle(int id, Article article) ;
+    Task DeleteArticle(Article article);
+    Task<Article?> FetchArticleByID(int id);
+    Task<IEnumerable<Article>> FetchArticles();
 }
 
 public sealed class ArticleService : IArticleService 
@@ -25,70 +21,45 @@ public sealed class ArticleService : IArticleService
         this.dbCtx = dbCtx;
     }
 
-    public async Task<FetchUserDTO> AddUser(CreateUserDTO dto) 
+    public async Task<Article> AddArticle(Article article) 
     {
-        User user = CreateUserDTO.ToUser(dto);
-
-        var sha256 = SHA256.Create();
-
-        var bytes = Encoding.UTF8.GetBytes(user.Password);
-        var hash = sha256.ComputeHash(bytes);
-        var hashString = Convert.ToBase64String(hash);
-        user.Password = hashString;
-
-        dbCtx.Add(user);
+        dbCtx.Add(article);
 
         await dbCtx.SaveChangesAsync();
 
-        return User.ToFetchUserDTO(user);
+        return article;
     }
 
-    public async Task UpdateUser(Guid id, UpdateUserDTO dto) 
+    public async Task UpdateArticle(int id, Article article) 
     {
-        User? existingUser = await dbCtx.User.Where(u => u.Id ==id).AsNoTracking().FirstOrDefaultAsync();
-
-        if (existingUser == null) 
-        {
-            return;
-        }
-
-        User user = UpdateUserDTO.ToUser(dto, existingUser);
-
-        dbCtx.Update(user);
+        dbCtx.Update(article);
 
         await dbCtx.SaveChangesAsync();
     }
 
-    public async Task DeleteUser(User user)
+    public async Task DeleteArticle(Article article)
     {
-        dbCtx.Remove(user);
+        dbCtx.Remove(article);
 
         await dbCtx.SaveChangesAsync();
     }
 
-    public async Task<FetchUserDTO?> FetchUserByID(Guid id)
+    public async Task<Article?> FetchArticleByID(int id)
     {
-        User? user = await dbCtx.User.Where(u => u.Id ==id).AsNoTracking().FirstOrDefaultAsync();
+        Article? article = await dbCtx.Article.Where(a => a.Id ==id).AsNoTracking().FirstOrDefaultAsync();
 
-        if (user == null) 
+        if (article == null) 
         {
             return null;
         }
 
-        return User.ToFetchUserDTO(user);        
+        return article;        
     }
 
-    public async Task<User?> FetchUserByEmail(string email) 
+    public async Task<IEnumerable<Article>> FetchArticles()
     {
-        User? user = await dbCtx.User.Where(u => u.Email == email).AsNoTracking().FirstOrDefaultAsync();
+        IEnumerable<Article> users = await dbCtx.Article.AsNoTracking().ToListAsync();
 
-        return user;
-    }
-
-    public async Task<IEnumerable<FetchUserDTO>> FetchUsers()
-    {
-        IEnumerable<User> users = await dbCtx.User.AsNoTracking().ToListAsync();
-
-        return users.Select(User.ToFetchUserDTO);
+        return users;
     }
 }

@@ -16,6 +16,7 @@ string connectionString = builder.Configuration.GetConnectionString("default")!;
 builder.Services.AddDbContext<ApplicationDbContext>(op => op.UseNpgsql(connectionString));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opts => 
     {

@@ -10,29 +10,24 @@ namespace temuruang_be.Controllers;
 [Route("api/articles")]
 public class ArticleController : ControllerBase
 {
-    private readonly IUserService _userSvc;
+    private readonly IArticleService _artSvc;
     private readonly ILogger<ArticleController> _logger;
 
-    public ArticleController(IUserService userService, ILogger<ArticleController> logger)
+    public ArticleController(IArticleService articleService, ILogger<ArticleController> logger)
     {
-        _userSvc = userService;
+        _artSvc = articleService;
         _logger = logger;
     }
 
     [HttpGet]
-    [Authorize]
+    
     public async Task<IActionResult> FetchAllArticles()
     {
         try 
-        {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
+        {   
+            var articles = await _artSvc.FetchArticles();
 
-            if (userId == null) 
-            {
-                return Unauthorized("User id not found");
-            }
-
-            return Ok(userId);
+            return Ok(ApiResponse<IEnumerable<Article>>.Create(200, "successfully fetch articles", articles));
         }
         catch (Exception e)
         {
@@ -42,18 +37,18 @@ public class ArticleController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> FetchUserByID(Guid id)
+    public async Task<IActionResult> FetchArticleByID(int id)
     {
         try 
         {
-            FetchUserDTO? user = await _userSvc.FetchUserByID(id);
+            var article = await _artSvc.FetchArticleByID(id);
 
-            if (user == null)
+            if (article == null)
             {
-                return NotFound(ApiResponse<FetchUserDTO?>.Create(404, "failed to find user", null));
+                return NotFound(ApiResponse<Article?>.Create(404, "failed to find article", null));
             }
 
-            return Ok(ApiResponse<FetchUserDTO>.Create(200, "successfully fetch user by id", user));
+            return Ok(ApiResponse<Article>.Create(200, "successfully fetch article by id", article));
         }
         catch (Exception e)
         {
@@ -63,12 +58,23 @@ public class ArticleController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddUser(CreateUserDTO dto)
+    [Authorize]
+    public async Task<IActionResult> AddArticle(Article article)
     {
         try 
         {
-            var user = await _userSvc.AddUser(dto);
-            return Ok(ApiResponse<FetchUserDTO>.Create(200, "successfully add user", user));
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
+
+            if (userId == null) 
+            {
+                return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
+            }
+
+            article.UserId = Guid.Parse(userId);
+
+            await _artSvc.AddArticle(article);
+            
+            return Ok(ApiResponse<Article>.Create(200, "successfully add article", article));
         } 
         catch (Exception e)
         {
@@ -78,22 +84,33 @@ public class ArticleController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(Guid id, UpdateUserDTO dto)
+    [Authorize]
+    public async Task<IActionResult> UpdateArticle(int id, UpdateUserDTO dto)
     {
         try 
         {
-            FetchUserDTO? user = await _userSvc.FetchUserByID(id);
+            Article? article = await _artSvc.FetchArticleByID(id);
 
-            if (user == null) 
+            if (article == null) 
             {
-                return NotFound(ApiResponse<FetchUserDTO?>.Create(404, "failed to update user", null));   
+                return NotFound(ApiResponse<Article?>.Create(404, "failed to update article", null));   
             }
 
-            dto.Id = id; 
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
 
-            await _userSvc.UpdateUser(id, dto);
+            if (userId == null) 
+            {
+                return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
+            }
 
-            return Ok(ApiResponse<string?>.Create(200, "successfully update user", null));
+            if (!article.UserId.ToString().Equals(userId))
+            {
+                return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
+            }
+
+            await _artSvc.UpdateArticle(id, article);
+
+            return Ok(ApiResponse<string?>.Create(200, "successfully update article", null));
         } 
         catch (Exception e)
         {
@@ -103,18 +120,31 @@ public class ArticleController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUser(Guid id)
+    [Authorize]
+    public async Task<IActionResult> DeleteArticle(int id)
     {
         try 
         {
-            FetchUserDTO? user = await _userSvc.FetchUserByID(id);
+            Article? article = await _artSvc.FetchArticleByID(id);
 
-            if (user == null )
+            if (article == null) 
             {
-                return NotFound(ApiResponse<FetchUserDTO?>.Create(404, "failed to delete user", null));   
+                return NotFound(ApiResponse<Article?>.Create(404, "failed to update article", null));   
             }
 
-            await _userSvc.DeleteUser(FetchUserDTO.ToUser(user));
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
+
+            if (userId == null) 
+            {
+                return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
+            }
+
+            if (!article.UserId.ToString().Equals(userId))
+            {
+                return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
+            }
+
+            await _artSvc.DeleteArticle(article);
 
             return Ok(ApiResponse<string?>.Create(200, "successfully delete user", null));
         }
