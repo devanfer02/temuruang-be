@@ -28,7 +28,6 @@ public class User
 
     public DateTime UpdatedAt { get; set; }
 
-    public ICollection<Article> Articles { get; set; }
     public ICollection<Booking> Bookings { get; set; }
 
     // mapper

@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using temuruang_be.Dtos.ArticleDTO;
@@ -20,26 +22,37 @@ public class ArticleController : ControllerBase
     }
 
     [HttpGet]
-    
+
     public async Task<IActionResult> FetchAllArticles()
     {
-        try 
-        {   
-            var articles = await _artSvc.FetchArticles();
+        try
+        {
+            int pageNumber = Convert.ToInt32(Request.Query["page"].FirstOrDefault() ?? "1");
+            int pageSize = Convert.ToInt32(Request.Query["size"].FirstOrDefault() ?? "6");
 
-            return Ok(ApiResponse<IEnumerable<Article>>.Create(200, "successfully fetch articles", articles));
+            var (articles, totalPages) = await _artSvc.FetchArticles(pageNumber, pageSize);
+
+            var resp = ApiResponse<IEnumerable<Article>>.Create(200, "successfully fetch articles", articles);
+
+            resp.meta = new Dictionary<string, object>();
+
+            resp.meta["total_pages"] = totalPages;
+            resp.meta["current_page"] = pageNumber;
+            resp.meta["page_size"] = pageSize;
+
+            return Ok(resp);
         }
         catch (Exception e)
         {
             _logger.LogError(e.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);            
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> FetchArticleByID(int id)
     {
-        try 
+        try
         {
             var article = await _artSvc.FetchArticleByID(id);
 
@@ -61,11 +74,11 @@ public class ArticleController : ControllerBase
     [Authorize]
     public async Task<IActionResult> AddArticle(ArticleRequestDTO dto)
     {
-        try 
+        try
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
 
-            if (userId == null) 
+            if (userId == null)
             {
                 return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
             }
@@ -74,9 +87,9 @@ public class ArticleController : ControllerBase
             article.UserId = Guid.Parse(userId);
 
             await _artSvc.AddArticle(article);
-            
+
             return Ok(ApiResponse<Article>.Create(200, "successfully add article", article));
-        } 
+        }
         catch (Exception e)
         {
             _logger.LogError(e.Message);
@@ -88,18 +101,18 @@ public class ArticleController : ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdateArticle(int id, ArticleRequestDTO dto)
     {
-        try 
+        try
         {
             Article? article = await _artSvc.FetchArticleByID(id);
 
-            if (article == null) 
+            if (article == null)
             {
-                return NotFound(ApiResponse<Article?>.Create(404, "failed to update article", null));   
+                return NotFound(ApiResponse<Article?>.Create(404, "failed to update article", null));
             }
 
             var userId = User.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
 
-            if (userId == null) 
+            if (userId == null)
             {
                 return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
             }
@@ -115,7 +128,7 @@ public class ArticleController : ControllerBase
             await _artSvc.UpdateArticle(id, updated);
 
             return Ok(ApiResponse<string?>.Create(200, "successfully update article", null));
-        } 
+        }
         catch (Exception e)
         {
             _logger.LogError(e.Message);
@@ -127,18 +140,18 @@ public class ArticleController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeleteArticle(int id)
     {
-        try 
+        try
         {
             Article? article = await _artSvc.FetchArticleByID(id);
 
-            if (article == null) 
+            if (article == null)
             {
-                return NotFound(ApiResponse<Article?>.Create(404, "failed to update article", null));   
+                return NotFound(ApiResponse<Article?>.Create(404, "failed to update article", null));
             }
 
             var userId = User.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
 
-            if (userId == null) 
+            if (userId == null)
             {
                 return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
             }
