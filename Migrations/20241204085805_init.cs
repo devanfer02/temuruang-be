@@ -38,7 +38,9 @@ namespace temuruang_be.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     Location = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     Type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Price = table.Column<int>(type: "integer", nullable: false),
+                    Capacity = table.Column<int>(type: "integer", nullable: false),
+                    Price = table.Column<long>(type: "bigint", nullable: false),
+                    ImageLink = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },

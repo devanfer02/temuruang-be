@@ -1,0 +1,22 @@
+INSERT INTO workspaces ("Name", "Description", "Location", "Type", "Capacity", "Price", "ImageLink", "CreatedAt", "UpdatedAt")
+VALUES
+  ('Workspace 1', 'A beautiful workspace with modern amenities.', 'New York', 'Office', 10, 500, 'https://images.unsplash.com/photo-1604112343678-76a2f9b93fcb', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 2', 'A spacious and bright office space perfect for teams.', 'Los Angeles', 'Office', 20, 650, 'https://images.unsplash.com/photo-1521747116042-5e107fe5f3c3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 3', 'Cozy shared space ideal for freelancers and small teams.', 'San Francisco', 'Co-working', 15, 400, 'https://images.unsplash.com/photo-1517266828845-042f4016e75d', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 4', 'Quiet office space with all essential equipment.', 'Chicago', 'Private', 8, 600, 'https://images.unsplash.com/photo-1599155997982-88a93579d8f7', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 5', 'Collaborative co-working space with excellent Wi-Fi.', 'Miami', 'Co-working', 25, 450, 'https://images.unsplash.com/photo-1494453347797-0f94d920c140', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 6', 'Premium private office with a stunning view.', 'Seattle', 'Private', 5, 750, 'https://images.unsplash.com/photo-1513836279013-ded7b3c5a1b4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 7', 'Shared space for tech startups and innovators.', 'Austin', 'Co-working', 30, 550, 'https://images.unsplash.com/photo-1509137430829-10ea8044f19b', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 8', 'Affordable office space with flexible terms.', 'Boston', 'Office', 12, 500, 'https://images.unsplash.com/photo-1603131178228-281edb299f2f', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 9', 'Creative space with artistic vibes.', 'Portland', 'Studio', 7, 350, 'https://images.unsplash.com/photo-1589220236725-4736a0519b8c', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 10', 'Premium conference room for meetings and events.', 'Denver', 'Meeting Room', 10, 700, 'https://images.unsplash.com/photo-1580211981030-1f6faeac2f26', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 11', 'Collaborative work environment with a community feel.', 'San Diego', 'Co-working', 20, 480, 'https://images.unsplash.com/photo-1598453968574-2b804d97c207', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 12', 'Modern office with all the latest tech.', 'Dallas', 'Office', 15, 550, 'https://images.unsplash.com/photo-1554907539-6002b3c240b4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 13', 'Elegant workspace with open floor plan.', 'Houston', 'Private', 10, 650, 'https://images.unsplash.com/photo-1562576308-e07b55e317ff', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 14', 'Cozy co-working space with excellent networking opportunities.', 'Atlanta', 'Co-working', 12, 450, 'https://images.unsplash.com/photo-1573164574572-9b7e3f0d0cf1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 15', 'A versatile creative space for artists and designers.', 'Los Angeles', 'Studio', 8, 400, 'https://images.unsplash.com/photo-1594151081469-ece5a360f672', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 16', 'Bright office with flexible layouts.', 'Chicago', 'Office', 15, 600, 'https://images.unsplash.com/photo-1596592406017-e842d1fcf99a', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 17', 'Ideal space for meetings and events.', 'New York', 'Meeting Room', 20, 700, 'https://images.unsplash.com/photo-1587074322227-4ca9980b6d85', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 18', 'Private office with all the comforts of home.', 'San Francisco', 'Private', 6, 700, 'https://images.unsplash.com/photo-1528304131305-b02174de9d4b', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 19', 'Trendy and chic co-working space for young professionals.', 'Miami', 'Co-working', 25, 500, 'https://images.unsplash.com/photo-1597620709352-67a51c1c1c60', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+  ('Workspace 20', 'Spacious office in a prime location.', 'Seattle', 'Office', 18, 650, 'https://images.unsplash.com/photo-1523841392220-bce8d8a6f5a1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

@@ -59,8 +59,8 @@ public sealed class WorkspaceService : IWorkspaceService
 
     public async Task<IEnumerable<Workspace>> FetchWorkspaces()
     {
-        IEnumerable<Workspace> users = await dbCtx.Workspace.AsNoTracking().ToListAsync();
+        IEnumerable<Workspace> workspaces = await dbCtx.Workspace.AsNoTracking().ToListAsync();
 
-        return users;
+        return workspaces;
     }
 }

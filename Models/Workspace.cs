@@ -25,7 +25,12 @@ public class Workspace
     public required string Type { get; set; }
 
     [Required]
+    public required int Capacity { get; set; }
+
+    [Required]
     public required long Price { get; set; }
+    [Required]
+    public required string ImageLink { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

@@ -12,7 +12,7 @@ using temuruang_be;
 namespace temuruang_be.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241203103036_init")]
+    [Migration("20241204085805_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -144,12 +144,19 @@ namespace temuruang_be.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Capacity")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImageLink")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -163,8 +170,8 @@ namespace temuruang_be.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("integer");
+                    b.Property<long>("Price")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Type")
                         .IsRequired()

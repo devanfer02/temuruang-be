@@ -16,6 +16,8 @@ public class WorkspaceRequestDTO
     public required string Type { get; set; }
     [Required]
     public required long Price { get; set; }
+    [Required]
+    public required int Capacity { get; set; }
 
     public static Workspace ToWorkspace(WorkspaceRequestDTO dto)
     {
@@ -26,6 +28,8 @@ public class WorkspaceRequestDTO
             Location = dto.Location,
             Type = dto.Type,
             Price = dto.Price,
+            Capacity = dto.Capacity,
+            ImageLink = ""
         };
     }
 }
