@@ -7,7 +7,7 @@ TemuRuang is a digital platform for searching and booking event spaces, designed
 ## Repositories
 
 - [FrontEnd](https://github.com/devanfer02/temuruang-fe)
-- [BackEnd](https://github.com/devanfer02/temuruang-fe)
+- [BackEnd](https://github.com/devanfer02/temuruang-be)
 
 ## 🛠️ Tech Stacks
 
