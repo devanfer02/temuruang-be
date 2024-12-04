@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using temuruang_be.Models;
 using temuruang_be.Dtos.AuthDTO;
 using System.Security.Cryptography;
+using temuruang_be.Utils;
 
 namespace temuruang_be.Services;
 
@@ -28,13 +29,7 @@ public class AuthService : IAuthService
 
     public bool PasswordMatch(User user, LoginDTO dto)
     {
-        var sha256 = SHA256.Create();
-
-        var bytes = Encoding.UTF8.GetBytes(dto.Password);
-        var hash = sha256.ComputeHash(bytes);
-        var hashString = Convert.ToBase64String(hash);
-        
-        return hashString == user.Password;
+        return user.Password == Hash.HashPassword(dto.Password);
     }
 
     public string CreateToken(User user)

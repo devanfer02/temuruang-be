@@ -3,13 +3,14 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using temuruang_be.Dtos.UserDTO;
 using temuruang_be.Models;
+using temuruang_be.Utils;
 
 namespace temuruang_be.Services;
 
 public interface IUserService
 {
     Task<FetchUserDTO> AddUser(CreateUserDTO dto);
-    Task UpdateUser(Guid id, UpdateUserDTO dto);
+    Task<bool> UpdateUser(Guid id, UpdateUserDTO dto);
     Task DeleteUser(User user);
     Task<FetchUserDTO?> FetchUserByID(Guid id);
     Task<User?> FetchUserByEmail(string email);
@@ -34,7 +35,7 @@ public sealed class UserService : IUserService
         var bytes = Encoding.UTF8.GetBytes(user.Password);
         var hash = sha256.ComputeHash(bytes);
         var hashString = Convert.ToBase64String(hash);
-        user.Password = hashString;
+        user.Password = Hash.HashPassword(user.Password);
 
         dbCtx.Add(user);
 
@@ -43,20 +44,27 @@ public sealed class UserService : IUserService
         return User.ToFetchUserDTO(user);
     }
 
-    public async Task UpdateUser(Guid id, UpdateUserDTO dto) 
+    public async Task<bool> UpdateUser(Guid id, UpdateUserDTO dto) 
     {
         User? existingUser = await dbCtx.User.Where(u => u.Id ==id).AsNoTracking().FirstOrDefaultAsync();
 
         if (existingUser == null) 
         {
-            return;
+            return false;
         }
 
         User user = UpdateUserDTO.ToUser(dto, existingUser);
 
+        if (dto.Password != null && !user.Password.Equals(Hash.HashPassword(dto.Password))) 
+        {
+            user.Password = Hash.HashPassword(dto.Password);
+        }
+
         dbCtx.Update(user);
 
         await dbCtx.SaveChangesAsync();
+
+        return true;
     }
 
     public async Task DeleteUser(User user)

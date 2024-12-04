@@ -35,11 +35,21 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> FetchUserByID(Guid id)
+    [HttpGet("profile")]
+    [Authorize]
+    public async Task<IActionResult> FetchUserByID()
     {
         try 
         {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
+
+            if (userId == null) 
+            {
+                return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
+            }
+
+            var id = Guid.Parse(userId);
+
             FetchUserDTO? user = await _userSvc.FetchUserByID(id);
 
             if (user == null)
@@ -71,21 +81,29 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(Guid id, UpdateUserDTO dto)
+    [HttpPut]
+    [Authorize]
+    public async Task<IActionResult> UpdateUser(UpdateUserDTO dto)
     {
         try 
         {
-            FetchUserDTO? user = await _userSvc.FetchUserByID(id);
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "jti")?.Value;
 
-            if (user == null) 
+            if (userId == null) 
             {
-                return NotFound(ApiResponse<FetchUserDTO?>.Create(404, "failed to update user", null));   
+                return Unauthorized(ApiResponse<string?>.Create(401, "unauthorized", null));
             }
+
+            var id = Guid.Parse(userId);
 
             dto.Id = id; 
 
-            await _userSvc.UpdateUser(id, dto);
+            var result = await _userSvc.UpdateUser(id, dto);
+
+            if (!result) 
+            {
+                return NotFound(ApiResponse<FetchUserDTO?>.Create(404, "failed to update user", null));   
+            }
 
             return Ok(ApiResponse<string?>.Create(200, "successfully update user", null));
         } 
