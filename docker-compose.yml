@@ -1,0 +1,33 @@
+services:
+  app:
+    container_name: temuruang-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - '5000:8080'
+    volumes:
+      - ./.aspnet:/root/.aspnet/DataProtection-Keys
+    networks:
+      - temuruang
+    depends_on:
+      - db 
+  db:
+    container_name: temuruang-db
+    image: postgres:16.2
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=temuruang
+    volumes:
+      - temuruangdata:/var/lib/postgresql/data
+    networks:
+      - temuruang
+
+volumes:
+  temuruangdata:
+
+networks:
+  temuruang:
+    driver: bridge

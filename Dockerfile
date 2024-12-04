@@ -1,18 +1,16 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
-COPY *.csproj ./
+COPY . ./
 RUN dotnet restore
-
-COPY . .
 
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
 
-EXPOSE 8000
+EXPOSE 8080
 
 # Start the application
-ENTRYPOINT ["dotnet", "NET-Core-Web-API-Docker-Demo.dll"]
+ENTRYPOINT ["dotnet", "temuruang-be.dll"]
