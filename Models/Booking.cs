@@ -21,6 +21,15 @@ public class Booking
     [MaxLength(50)]
     public required string Status { get; set; }
 
+    [Required]
+    public required int DurationOfUse {get; set;}
+
+    [Required]
+    public required string PaymentMethod {get; set;}
+
+    [Required]
+    public required DateOnly BookedAt { get; set ;}
+
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
