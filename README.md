@@ -39,18 +39,13 @@ In today's fast-paced digital era, finding venues or spaces for events such as m
     <tr>
       <td>Frontend</td>
       <td>
-        <img src="https://skillicons.dev/icons?i=react" alt="React" />
-        <img src="https://skillicons.dev/icons?i=tailwind" alt="Tailwind CSS" />
-        <img src="https://skillicons.dev/icons?i=bootstrap" alt="Bootstrap" />
-        <img src="https://skillicons.dev/icons?i=typescript" alt="TypeScript" />
+        <img src="https://skillicons.dev/icons?i=react,typescript,tailwind,bootstrap" alt="React" />
       </td>
     </tr>
     <tr>
       <td>Backend</td>
       <td>
-        <img src="https://skillicons.dev/icons?i=docker" alt="Docker" />
-        <img src="https://skillicons.dev/icons?i=net" alt=".NET" />
-        <img src="https://skillicons.dev/icons?i=cs" alt="C#" />
+        <img src="https://skillicons.dev/icons?i=cs,net,postgres,docker" alt="C#" />
       </td>
     </tr>
   </tbody>
