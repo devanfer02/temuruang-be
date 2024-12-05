@@ -34,6 +34,4 @@ public class Workspace
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-
-    public ICollection<Booking> Bookings { get; set; }
 }

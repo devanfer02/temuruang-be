@@ -9,9 +9,11 @@ public class Booking
     [Key]
     public int Id { get; set; }
 
+    [Required]
     [ForeignKey("User")]
     public Guid UserId { get; set; }
 
+    [Required]
     [ForeignKey("Workspace")]
     public int WorkspaceId { get; set; }
 
@@ -22,6 +24,5 @@ public class Booking
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
-    public User User { get; set; }
     public Workspace Workspace { get; set; }
 }

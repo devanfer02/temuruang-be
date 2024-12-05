@@ -1,0 +1,22 @@
+INSERT INTO workspaces ("Name", "Description", "Location", "Type", "Capacity", "Price", "ImageLink", "CreatedAt", "UpdatedAt")
+VALUES
+('CoHive Sudirman', 'A modern coworking space in the heart of Jakarta', 'Jakarta', 'Coworking', 50, 500000, 'https://example.com/c1.jpg', current_timestamp, current_timestamp),
+('GoWork Thamrin', 'Perfect for startups and freelancers', 'Jakarta', 'Coworking', 40, 450000, 'https://example.com/c2.jpg', current_timestamp, current_timestamp),
+('HiveWorks Bali', 'Inspiring workspace near the beaches of Bali', 'Bali', 'Coworking', 30, 400000, 'https://example.com/c3.jpg', current_timestamp, current_timestamp),
+('Cre8 Surabaya', 'Productivity-focused workspace in Surabaya', 'Surabaya', 'Office', 20, 300000, 'https://example.com/c4.jpg', current_timestamp, current_timestamp),
+('Kumpul Bali', 'A vibrant coworking space for digital nomads', 'Bali', 'Coworking', 25, 350000, 'https://example.com/c5.jpg', current_timestamp, current_timestamp),
+('UnionSpace Medan', 'Premium workspace with meeting facilities', 'Medan', 'Office', 15, 250000, 'https://example.com/c6.jpg', current_timestamp, current_timestamp),
+('Greenhouse Jakarta', 'Eco-friendly coworking in South Jakarta', 'Jakarta', 'Coworking', 60, 550000, 'https://example.com/c7.jpg', current_timestamp, current_timestamp),
+('Werkspace Bandung', 'Creative coworking for young professionals', 'Bandung', 'Coworking', 35, 300000, 'https://example.com/c8.jpg', current_timestamp, current_timestamp),
+('The Lounge Semarang', 'Casual yet professional coworking setup', 'Semarang', 'Coworking', 20, 280000, 'https://example.com/c9.jpg', current_timestamp, current_timestamp),
+('SmartOffice Jogja', 'Modern office rentals in Yogyakarta', 'Yogyakarta', 'Office', 15, 240000, 'https://example.com/c10.jpg', current_timestamp, current_timestamp),
+('HubHub Denpasar', 'Collaborative space for creators', 'Denpasar', 'Coworking', 25, 320000, 'https://example.com/c11.jpg', current_timestamp, current_timestamp),
+('Infinity Makassar', 'High-tech workspace with ocean views', 'Makassar', 'Coworking', 30, 420000, 'https://example.com/c12.jpg', current_timestamp, current_timestamp),
+('Jakarta Connect', 'Affordable coworking in Central Jakarta', 'Jakarta', 'Coworking', 40, 400000, 'https://example.com/c13.jpg', current_timestamp, current_timestamp),
+('BandungBase', 'Creative hub for young talents in Bandung', 'Bandung', 'Coworking', 30, 310000, 'https://example.com/c14.jpg', current_timestamp, current_timestamp),
+('Bali Villa Offices', 'Luxurious workspace with a pool view', 'Bali', 'Office', 10, 600000, 'https://example.com/c15.jpg', current_timestamp, current_timestamp),
+('Surabaya Station', 'Modern facilities and ergonomic workspaces', 'Surabaya', 'Coworking', 35, 330000, 'https://example.com/c16.jpg', current_timestamp, current_timestamp),
+('The Hive Jakarta', 'Elegant coworking with high-speed WiFi', 'Jakarta', 'Coworking', 45, 450000, 'https://example.com/c17.jpg', current_timestamp, current_timestamp),
+('FocusSpace Jogja', 'Quiet and peaceful environment for professionals', 'Yogyakarta', 'Office', 20, 300000, 'https://example.com/c18.jpg', current_timestamp, current_timestamp),
+('EastHub Medan', 'Collaboration-driven coworking hub', 'Medan', 'Coworking', 25, 310000, 'https://example.com/c19.jpg', current_timestamp, current_timestamp),
+('PacificSpace Bali', 'Beautiful open workspace near the sea', 'Bali', 'Coworking', 40, 500000, 'https://example.com/c20.jpg', current_timestamp, current_timestamp);

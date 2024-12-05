@@ -39,7 +39,8 @@ public class User
             Fullname = user.Fullname,
             Email = user.Email,
             CreatedAt = user.CreatedAt,
-            UpdatedAt = user.UpdatedAt
+            UpdatedAt = user.UpdatedAt,
+            Bookings = user.Bookings
         };
     }
 }

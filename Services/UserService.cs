@@ -76,7 +76,12 @@ public sealed class UserService : IUserService
 
     public async Task<FetchUserDTO?> FetchUserByID(Guid id)
     {
-        User? user = await dbCtx.User.Where(u => u.Id ==id).AsNoTracking().FirstOrDefaultAsync();
+        User? user = await dbCtx.User.
+            Where(u => u.Id ==id).
+            AsNoTracking().
+            Include(u => u.Bookings). 
+            ThenInclude(b => b.Workspace).
+            FirstOrDefaultAsync();
 
         if (user == null) 
         {

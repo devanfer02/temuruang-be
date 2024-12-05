@@ -6,17 +6,16 @@ using temuruang_be;
 using temuruang_be.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
-
-string connectionString = builder.Configuration.GetConnectionString("default")!;
+var connectionString = builder.Configuration.GetConnectionString("default")!;
 
 builder.Services.AddDbContext<ApplicationDbContext>(op => op.UseNpgsql(connectionString));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IWorkspaceService, WorkspaceService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opts => 
     {
@@ -34,7 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddCors(opts => {
     opts.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin() //
+        policy.AllowAnyOrigin() 
               .AllowAnyHeader() 
               .AllowAnyMethod(); 
     });

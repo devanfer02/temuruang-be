@@ -12,8 +12,6 @@ public class FetchUserDTO
 
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-
-    public ICollection<Article> Articles { get; set; }
     public ICollection<Booking> Bookings { get; set; }
 
     public static User ToUser(FetchUserDTO dto)

@@ -84,7 +84,7 @@ public class WorkspaceController : ControllerBase
 
             if (current == null)
             {
-                return NotFound(ApiResponse<string?>.Create(200, "failed to update workspace", "cant find the requested item"));
+                return NotFound(ApiResponse<string?>.Create(404, "failed to update workspace", "cant find the requested item"));
             }
 
             await _workSvc.UpdateWorkspace(id, WorkspaceRequestDTO.ToWorkspace(dto));
@@ -107,7 +107,7 @@ public class WorkspaceController : ControllerBase
 
             if (current == null)
             {
-                return NotFound(ApiResponse<string?>.Create(200, "failed to delete workspace", "cant find the requested item"));
+                return NotFound(ApiResponse<string?>.Create(404, "failed to delete workspace", "cant find the requested item"));
             }
 
             await _workSvc.DeleteWorkspace(current);
