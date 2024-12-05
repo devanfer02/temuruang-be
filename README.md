@@ -17,6 +17,47 @@ In today's fast-paced digital era, finding venues or spaces for events such as m
 - User can update profile
 - User can see list of articles available
 
+## 🚀 Setup
+
+You need docker to bootstrap TemuRuang application
+
+1. Clone both repositories including frontend and backend
+
+```zsh
+git clone https://github.com/devanfer02/temuruang-fe.git
+git clone https://github.com/devanfer02/temuruang-be.git
+```
+
+2. Navigate to backend directory and copy the `appsettings.json` file
+
+```zsh
+cd ~/temuruang-be
+cp appsettings.Development.json appsettings.Development.json
+```
+
+3. Configure the `appsettings.json` file, makesure the database host is `db` not localhost
+
+4. After that, spin up the backend containers
+
+```zsh
+docker compose up -d
+```
+
+5. Navigate to frontend directory and configure the `.env` like `.env.example`
+
+```zsh
+cp ~/temuruang-fe
+cp .env.example .env
+```
+
+6. Spin up the frontend containers
+
+```zsh
+docker compose up -d
+```
+
+7. Check [localhost:5050](http://localhost:5050) to verify if it's working or not
+
 ## 🗃️ Repositories
 
 - [FrontEnd](https://github.com/devanfer02/temuruang-fe)
