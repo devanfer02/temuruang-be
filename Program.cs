@@ -50,9 +50,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("AllowgiAll");
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
