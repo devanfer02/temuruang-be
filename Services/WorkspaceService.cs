@@ -5,23 +5,23 @@ namespace temuruang_be.Services;
 
 public interface IWorkspaceService
 {
-    Task<Workspace> AddWorkspace(Workspace Workspace) ;
-    Task UpdateWorkspace(int id, Workspace Workspace) ;
+    Task<Workspace> AddWorkspace(Workspace Workspace);
+    Task UpdateWorkspace(int id, Workspace Workspace);
     Task DeleteWorkspace(Workspace Workspace);
     Task<Workspace?> FetchWorkspaceByID(int id);
-    Task<IEnumerable<Workspace>> FetchWorkspaces();
+    Task<(IEnumerable<Workspace>, int totalPages)> FetchWorkspaces(int pageNumber, int pageSize);
 }
 
-public sealed class WorkspaceService : IWorkspaceService 
+public sealed class WorkspaceService : IWorkspaceService
 {
     private readonly ApplicationDbContext dbCtx;
 
-    public WorkspaceService(ApplicationDbContext dbCtx) 
+    public WorkspaceService(ApplicationDbContext dbCtx)
     {
         this.dbCtx = dbCtx;
     }
 
-    public async Task<Workspace> AddWorkspace(Workspace Workspace) 
+    public async Task<Workspace> AddWorkspace(Workspace Workspace)
     {
         dbCtx.Add(Workspace);
 
@@ -30,7 +30,7 @@ public sealed class WorkspaceService : IWorkspaceService
         return Workspace;
     }
 
-    public async Task UpdateWorkspace(int id, Workspace Workspace) 
+    public async Task UpdateWorkspace(int id, Workspace Workspace)
     {
         Workspace.Id = id;
         dbCtx.Update(Workspace);
@@ -47,20 +47,28 @@ public sealed class WorkspaceService : IWorkspaceService
 
     public async Task<Workspace?> FetchWorkspaceByID(int id)
     {
-        Workspace? Workspace = await dbCtx.Workspace.Where(a => a.Id ==id).AsNoTracking().FirstOrDefaultAsync();
+        Workspace? Workspace = await dbCtx.Workspace.Where(a => a.Id == id).AsNoTracking().FirstOrDefaultAsync();
 
-        if (Workspace == null) 
+        if (Workspace == null)
         {
             return null;
         }
 
-        return Workspace;        
+        return Workspace;
     }
 
-    public async Task<IEnumerable<Workspace>> FetchWorkspaces()
+    public async Task<(IEnumerable<Workspace>, int totalPages)> FetchWorkspaces(int pageNumber, int pageSize)
     {
-        IEnumerable<Workspace> workspaces = await dbCtx.Workspace.AsNoTracking().ToListAsync();
+        IEnumerable<Workspace> workspaces = await dbCtx.
+            Workspace.
+            AsNoTracking().
+            Skip((pageNumber - 1) * pageSize).
+            Take(pageSize).
+            ToListAsync();
 
-        return workspaces;
+        int totalCount = await dbCtx.Workspace.CountAsync();
+        int totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+        return (workspaces, totalPages);
     }
 }

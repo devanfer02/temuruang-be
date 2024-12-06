@@ -12,7 +12,7 @@ public class WorkspaceController : ControllerBase
     private readonly IWorkspaceService _workSvc;
     private readonly ILogger<WorkspaceController> _logger;
 
-    public WorkspaceController(IWorkspaceService workspaceService, ILogger<WorkspaceController> logger) 
+    public WorkspaceController(IWorkspaceService workspaceService, ILogger<WorkspaceController> logger)
     {
         _workSvc = workspaceService;
         _logger = logger;
@@ -21,23 +21,35 @@ public class WorkspaceController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> FetchAllWorkspaces()
     {
-        try 
+        try
         {
-            var workspaces = await _workSvc.FetchWorkspaces();
+            int pageNumber = Convert.ToInt32(Request.Query["page"].FirstOrDefault() ?? "1");
+            int pageSize = Convert.ToInt32(Request.Query["size"].FirstOrDefault() ?? "9");
 
-            return Ok(ApiResponse<IEnumerable<Workspace>>.Create(200, "successfully fetch workspaces", workspaces));
+            var (workspaces, totalPages) = await _workSvc.FetchWorkspaces(pageNumber, pageSize);
+            
+            var resp = ApiResponse<IEnumerable<Workspace>>.Create(200, "successfully fetch workspaces", workspaces);
+
+            resp.meta = new Dictionary<string, object>();
+
+            resp.meta["total_pages"] = totalPages;
+            resp.meta["current_page"] = pageNumber;
+            resp.meta["page_size"] = pageSize;
+
+
+            return Ok(resp);
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             _logger.LogError(e.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);            
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
         }
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> FetchWorkspaceByID(int id)
     {
-        try 
+        try
         {
             var workspace = await _workSvc.FetchWorkspaceByID(id);
 
@@ -48,17 +60,17 @@ public class WorkspaceController : ControllerBase
 
             return Ok(ApiResponse<Workspace>.Create(200, "successfully fetch workspace", workspace));
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             _logger.LogError(e.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);            
-        }   
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        }
     }
 
     [HttpPost]
     public async Task<IActionResult> AddWorkspace(WorkspaceRequestDTO dto)
     {
-        try 
+        try
         {
             if (dto.Name == null)
             {
@@ -68,17 +80,17 @@ public class WorkspaceController : ControllerBase
 
             return Ok(ApiResponse<Workspace>.Create(200, "successfully create workspace", workspace));
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             _logger.LogError(e.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);            
-        }   
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        }
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateWorkspace(int id, WorkspaceRequestDTO dto)
     {
-        try 
+        try
         {
             var current = await _workSvc.FetchWorkspaceByID(id);
 
@@ -91,17 +103,17 @@ public class WorkspaceController : ControllerBase
 
             return Ok(ApiResponse<string?>.Create(200, "successfully update workspace", null));
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             _logger.LogError(e.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);            
-        }   
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        }
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteWorkspace(int id)
     {
-        try 
+        try
         {
             var current = await _workSvc.FetchWorkspaceByID(id);
 
@@ -114,10 +126,10 @@ public class WorkspaceController : ControllerBase
 
             return Ok(ApiResponse<string?>.Create(200, "successfully delete workspace", null));
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             _logger.LogError(e.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);            
-        }   
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        }
     }
 }

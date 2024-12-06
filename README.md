@@ -32,7 +32,7 @@ git clone https://github.com/devanfer02/temuruang-be.git
 
 ```zsh
 cd ~/temuruang-be
-cp appsettings.Development.json appsettings.Development.json
+cp appsettings.Development.json appsettings.json
 ```
 
 3. Configure the `appsettings.json` file, makesure the database host is `db` not localhost
